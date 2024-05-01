@@ -1,18 +1,26 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Book
-from .models import Circulation
+from .models import Book, Circulation, Profile
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['address', 'phone_number']
+
 
 class CirculationForm(forms.ModelForm):
     class Meta:
         model = Circulation
         fields = ['book_id', 'checkout_date', 'return_date', 'reserved']
         
+
 class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ['title', 'author', 'isbn', 'publication_year']
+
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(required=True)

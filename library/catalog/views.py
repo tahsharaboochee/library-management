@@ -1,14 +1,13 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import LoginView, LogoutView
-from .forms import RegisterForm
-from .models import Transaction, Book
-from .forms import BookForm
+from django.db import models
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import RegisterForm, BookForm, ProfileForm
+from .models import Transaction, Book, Profile
 import requests
+from django.contrib.auth.views import LoginView, LogoutView
 from .models import Circulation
 from datetime import date
-from django.db import models
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
@@ -129,7 +128,35 @@ def register(request):
 
     return render(request, 'catalog/register.html', {'form': form})
 
+
 @login_required
 def home(request):
     context = {'user': request.user, 'title': 'Home Page'}
     return render(request, 'catalog/home.html', context)
+
+
+@login_required
+def profile_view(request):
+    user = request.user
+    profile = get_object_or_404(Profile, user=user)
+
+    # Fetch user's borrowing history
+    borrowing_history = Transaction.objects.filter(user=user)
+
+    return render(request, 'catalog/profile.html', {'user': user, 'profile': profile, 'borrowing_history': borrowing_history})
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+    profile = get_object_or_404(Profile, user=user)
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_view')
+    else:
+        form = ProfileForm(instance=profile)
+
+    return render(request, 'catalog/edit_profile.html', {'form': form})
