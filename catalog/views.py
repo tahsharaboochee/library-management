@@ -9,19 +9,18 @@ from django.contrib.auth.views import LoginView, LogoutView
 from .models import Circulation
 from datetime import date
 
-def book_detail(request, pk):
-    book = get_object_or_404(Book, pk=pk)
-    return render(request, 'catalog/book_detail.html', {'book': book})
-
 
 def book_list(request):
+    # Get search queries and filters from the request
     query = request.GET.get("q", "")
     title_filter = request.GET.get("title", "")
     author_filter = request.GET.get("author", "")
     isbn_filter = request.GET.get("isbn", "")
 
-    books = Book.objects.all()  # Start with all books
+    # Start with all books
+    books = Book.objects.all()
 
+    # Apply general search query
     if query:
         books = books.filter(
             models.Q(title__icontains=query) | 
@@ -29,6 +28,7 @@ def book_list(request):
             models.Q(isbn__icontains=query)
         )
 
+    # Apply advanced filters
     if title_filter:
         books = books.filter(title__icontains=title_filter)
     if author_filter:
@@ -61,10 +61,6 @@ def fetch_books(query):
         })
     return books
 
-def book_list(request):
-    query = request.GET.get("q", "Python")  # Default search query
-    books = fetch_books(query)
-    return render(request, 'catalog/book_list.html', {'books': books, 'query': query})
 
 def book_detail(request, id):
     """

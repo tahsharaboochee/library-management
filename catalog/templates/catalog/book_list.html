@@ -1,26 +1,25 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Books</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Books{% endblock %}
+
+{% block content %}
     <h2>Library Books</h2>
 
     <form action="" method="get">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search books by title, author, or ISBN...">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search books...">
         <button type="submit">Search</button>
     </form>
 
     <form action="" method="get">
         <label for="title">Title:</label>
         <input type="text" name="title" id="title" value="{{ title }}">
-        
+
         <label for="author">Author:</label>
         <input type="text" name="author" id="author" value="{{ author }}">
 
         <label for="isbn">ISBN:</label>
         <input type="text" name="isbn" id="isbn" value="{{ isbn }}">
-        
+
         <button type="submit">Advanced Search</button>
     </form>
 
@@ -30,6 +29,9 @@
                 <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a> by {{ book.author }}
             </li>
         {% endfor %}
+
+        {% if not books %}
+            <li>No books found.</li>
+        {% endif %}
     </ul>
-</body>
-</html>
+{% endblock %}

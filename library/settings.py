@@ -1,8 +1,7 @@
-from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-+px#lfe)twf*mp!2g(!#hkjz-z(-l(cf5e$gz@2cx#i9z$8m7w'
@@ -40,7 +39,9 @@ ROOT_URLCONF = 'library.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'library/templates'),  # Ensuring the main templates directory is accessible
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,10 +106,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/' # Define where Django looks for static files
+STATIC_URL = '/static/'  # Define where Django looks for static files
 # Specify additional directories where static files may be found
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'library/static'),
 ]
 # Directory where collected static files are stored for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

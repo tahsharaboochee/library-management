@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{ title }}</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
     <h1>Welcome, {{ user.username }}!</h1>
     <form action="{% url 'logout' %}" method="post">
         {% csrf_token %}
         <button type="submit">Logout</button>
     </form>
-</body>
-</html>
+{% endblock %}
