@@ -6,7 +6,7 @@
     <h2>Library Books</h2>
 
     <form action="" method="get">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search books...">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search books by title, author, or ISBN...">
         <button type="submit">Search</button>
     </form>
 
@@ -23,15 +23,29 @@
         <button type="submit">Advanced Search</button>
     </form>
 
+    <h3>API Results:</h3>
     <ul>
         {% for book in books %}
             <li>
-                <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a> by {{ book.author }}
+                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.authors|join:', ' }}
+                <form action="{% url 'save_book' book.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Save</button>
+                </form>
             </li>
         {% endfor %}
+    </ul>
 
-        {% if not books %}
-            <li>No books found.</li>
-        {% endif %}
+    <h3>My Saved Books:</h3>
+    <ul>
+        {% for user_book in user_books %}
+            <li>
+                <a href="{% url 'book_detail' user_book.pk %}">{{ user_book.book_title }}</a> by {{ user_book.authors }}
+                <form action="{% url 'delete_book' user_book.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
     </ul>
 {% endblock %}

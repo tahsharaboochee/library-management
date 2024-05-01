@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import RegisterForm, BookForm, ProfileForm
-from .models import Transaction, Book, Profile
+from .models import Transaction, Book, Profile, UserBook
 import requests
 from django.contrib.auth.views import LoginView, LogoutView
 from .models import Circulation
@@ -17,26 +17,21 @@ def book_list(request):
     author_filter = request.GET.get("author", "")
     isbn_filter = request.GET.get("isbn", "")
 
-    # Start with all books
-    books = Book.objects.all()
+    # Fetch books from the Google Books API
+    books = fetch_books(query)
 
-    # Apply general search query
-    if query:
-        books = books.filter(
-            models.Q(title__icontains=query) | 
-            models.Q(author__icontains=query) | 
-            models.Q(isbn__icontains=query)
-        )
-
-    # Apply advanced filters
+    # Apply advanced filters directly to the list
     if title_filter:
-        books = books.filter(title__icontains=title_filter)
+        books = [book for book in books if title_filter.lower() in book['title'].lower()]
     if author_filter:
-        books = books.filter(author__icontains=author_filter)
+        books = [book for book in books if any(author_filter.lower() in author.lower() for author in book['authors'])]
     if isbn_filter:
-        books = books.filter(isbn__icontains=isbn_filter)
+        books = [book for book in books if isbn_filter in book['isbn']]
 
-    return render(request, 'catalog/book_list.html', {'books': books, 'query': query, 'title': title_filter, 'author': author_filter, 'isbn': isbn_filter})
+    # Fetch user's saved books
+    user_books = UserBook.objects.filter(user=request.user)
+
+    return render(request, 'catalog/book_list.html', {'books': books, 'user_books': user_books, 'query': query, 'title': title_filter, 'author': author_filter, 'isbn': isbn_filter})
 
 
 def fetch_books(query):
@@ -123,6 +118,42 @@ def register(request):
         form = RegisterForm()
 
     return render(request, 'catalog/register.html', {'form': form})
+
+
+def save_book(request, id):
+    """
+    Save a book to the user's account.
+    """
+    if request.method == 'POST':
+        # Fetch book data from the API
+        response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{id}")
+        data = response.json()
+        volume_info = data.get("volumeInfo", {})
+
+        # Create a UserBook entry
+        UserBook.objects.create(
+            user=request.user,
+            book_id=id,
+            book_title=volume_info.get("title"),
+            authors=", ".join(volume_info.get("authors", [])),
+            isbn=next((id['identifier'] for id in volume_info.get('industryIdentifiers', []) if id['type'] == 'ISBN_13'), 'N/A'),
+            description=volume_info.get("description", "No description available"),
+            publication_year=int(volume_info.get("publishedDate", "N/A").split('-')[0]) if volume_info.get("publishedDate") else None,
+        )
+
+        return redirect('book_list')
+
+
+def delete_book(request, pk):
+    """
+    Delete a book from the user's account.
+    """
+    user_book = get_object_or_404(UserBook, pk=pk)
+    if request.method == 'POST':
+        user_book.delete()
+        return redirect('book_list')
+
+    return render(request, 'catalog/delete_book.html', {'book': user_book})
 
 
 @login_required

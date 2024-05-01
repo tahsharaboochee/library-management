@@ -22,6 +22,19 @@ class Book(models.Model):
                 return "Reserved"
         
         return "Available"
+
+
+class UserBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    book_id = models.CharField(max_length=100)  # Google Books ID
+    book_title = models.CharField(max_length=200)
+    authors = models.CharField(max_length=500)
+    isbn = models.CharField(max_length=13, blank=True)
+    description = models.TextField(blank=True)
+    publication_year = models.IntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.user.username}'s Book: {self.book_title}"
     
 
 class Transaction(models.Model):

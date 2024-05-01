@@ -1,7 +1,5 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ book.title }}{% endblock %}
-
 {% block content %}
     <h2>{{ book.title }}</h2>
     <p>Author(s): {{ book.authors|join:', ' }}</p>
@@ -11,12 +9,12 @@
 
     <p>Status: {{ book.availability_status }}</p>
 
-    <form action="{% url 'checkout_book' book.id %}" method="post">
+    <form action="{% url 'checkout_book' book.pk %}" method="post">
         {% csrf_token %}
         <button type="submit">Checkout</button>
     </form>
 
-    <form action="{% url 'return_book' book.id %}" method="post">
+    <form action="{% url 'return_book' book.pk %}" method="post">
         {% csrf_token %}
         <button type="submit">Return</button>
     </form>
