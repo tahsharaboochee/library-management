@@ -9,6 +9,12 @@ import requests
 from .models import Circulation
 from datetime import date
 
+
+def book_detail(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    return render(request, 'catalog/book_detail.html', {'book': book})
+
+
 def fetch_books(query):
     """
     Fetch books from the Google Books API based on a search query.

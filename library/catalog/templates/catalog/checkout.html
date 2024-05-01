@@ -4,7 +4,7 @@
     <title>Checkout Book</title>
 </head>
 <body>
-    <h2>Do you want to check out this book?</h2>
+    <h2>Do you want to check out this book {{ book.title }}?</h2>
     <form method="post">
         {% csrf_token %}
         <button type="submit">Checkout</button>

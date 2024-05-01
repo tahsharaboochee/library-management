@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Return Book</title>
+</head>
+<body>
+    <h2>Return Book: {{ book.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Return</button>
+    </form>
+</body>
+</html>
