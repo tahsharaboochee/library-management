@@ -5,9 +5,15 @@
 </head>
 <body>
     <h2>{{ book.title }}</h2>
-    <p>Author: {{ book.author }}</p>
+    <p>Author(s): {{ book.authors|join:', ' }}</p>
     <p>ISBN: {{ book.isbn }}</p>
-    <p>Publication Year: {{ book.publication_year }}</p>
+    <p>Publication Year: {{ book.publishedDate }}</p>
+    <p>Description: {{ book.description }}</p>
+
+    <form action="{% url 'checkout_book' book.isbn %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Checkout</button>
+    </form>
 
     <a href="{% url 'book_list' %}">Back to Book List</a>
 </body>

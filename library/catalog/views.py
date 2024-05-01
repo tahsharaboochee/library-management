@@ -3,7 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import RegisterForm
-from .models import Book
+from .models import Transaction, Book
 from .forms import BookForm
 import requests
 from .models import Circulation
@@ -55,20 +55,23 @@ def book_detail(request, id):
 
     return render(request, 'catalog/book_detail.html', {'book': book})
 
-def checkout_book(request, id):
+
+def checkout_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
-        Circulation.objects.create(book_id=id, user=request.user, checkout_date=date.today())
-        return redirect('book_detail', id=id)
+        Transaction.objects.create(book=book, user=request.user, transaction_type="checkout")
+        return redirect('book_detail', pk=pk)
 
-    return render(request, 'catalog/checkout.html', {'id': id})
+    return render(request, 'catalog/checkout.html', {'book': book})
 
-def return_book(request, id):
-    circulation = Circulation.objects.filter(book_id=id, user=request.user).order_by('-checkout_date').first()
-    if circulation:
-        circulation.return_date = date.today()
-        circulation.save()
 
-    return redirect('book_detail', id=id)
+def return_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        Transaction.objects.create(book=book, user=request.user, transaction_type="return")
+        return redirect('book_detail', pk=pk)
+
+    return render(request, 'catalog/return.html', {'book': book})
 
 
 def create_book(request):
