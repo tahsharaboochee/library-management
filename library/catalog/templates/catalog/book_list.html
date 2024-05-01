@@ -7,14 +7,27 @@
     <h2>Library Books</h2>
 
     <form action="" method="get">
-        <input type="text" name="q" value="{{ query }}" placeholder="Search books...">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search books by title, author, or ISBN...">
         <button type="submit">Search</button>
+    </form>
+
+    <form action="" method="get">
+        <label for="title">Title:</label>
+        <input type="text" name="title" id="title" value="{{ title }}">
+        
+        <label for="author">Author:</label>
+        <input type="text" name="author" id="author" value="{{ author }}">
+
+        <label for="isbn">ISBN:</label>
+        <input type="text" name="isbn" id="isbn" value="{{ isbn }}">
+        
+        <button type="submit">Advanced Search</button>
     </form>
 
     <ul>
         {% for book in books %}
             <li>
-                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.authors|join:', ' }}
+                <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a> by {{ book.author }}
             </li>
         {% endfor %}
     </ul>

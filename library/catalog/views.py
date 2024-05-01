@@ -8,11 +8,36 @@ from .forms import BookForm
 import requests
 from .models import Circulation
 from datetime import date
-
+from django.db import models
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'catalog/book_detail.html', {'book': book})
+
+
+def book_list(request):
+    query = request.GET.get("q", "")
+    title_filter = request.GET.get("title", "")
+    author_filter = request.GET.get("author", "")
+    isbn_filter = request.GET.get("isbn", "")
+
+    books = Book.objects.all()  # Start with all books
+
+    if query:
+        books = books.filter(
+            models.Q(title__icontains=query) | 
+            models.Q(author__icontains=query) | 
+            models.Q(isbn__icontains=query)
+        )
+
+    if title_filter:
+        books = books.filter(title__icontains=title_filter)
+    if author_filter:
+        books = books.filter(author__icontains=author_filter)
+    if isbn_filter:
+        books = books.filter(isbn__icontains=isbn_filter)
+
+    return render(request, 'catalog/book_list.html', {'books': books, 'query': query, 'title': title_filter, 'author': author_filter, 'isbn': isbn_filter})
 
 
 def fetch_books(query):
