@@ -5,13 +5,18 @@
 </head>
 <body>
     <h2>Library Books</h2>
+
+    <form action="" method="get">
+        <input type="text" name="q" value="{{ query }}" placeholder="Search books...">
+        <button type="submit">Search</button>
+    </form>
+
     <ul>
         {% for book in books %}
             <li>
-                <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a> by {{ book.author }}
+                <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.authors|join:', ' }}
             </li>
         {% endfor %}
     </ul>
 </body>
 </html>
-
