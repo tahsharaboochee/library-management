@@ -18,7 +18,8 @@ def book_list(request):
     isbn_filter = request.GET.get("isbn", "")
 
     # Fetch books from the Google Books API
-    books = fetch_books(query)
+    books = fetch_books(query) if query else []
+
 
     # Apply advanced filters directly to the list
     if title_filter:
@@ -40,6 +41,10 @@ def fetch_books(query):
     """
     url = f"https://www.googleapis.com/books/v1/volumes?q={query}"
     response = requests.get(url)
+    # Check for response status
+    if response.status_code != 200:
+        return None  # Or handle the error appropriately
+    
     data = response.json()
 
     # Process the API response
@@ -67,6 +72,7 @@ def book_detail(request, id):
 
     volume_info = data.get("volumeInfo", {})
     book = {
+        'id': id,
         'title': volume_info.get("title"),
         'authors': volume_info.get("authors", []),
         'isbn': next((id['identifier'] for id in volume_info.get('industryIdentifiers', []) if id['type'] == 'ISBN_13'), 'N/A'),
@@ -130,7 +136,7 @@ def save_book(request, id):
         data = response.json()
         volume_info = data.get("volumeInfo", {})
 
-        # Create a UserBook entry
+        # Create a UserBook entry with all necessary information
         UserBook.objects.create(
             user=request.user,
             book_id=id,

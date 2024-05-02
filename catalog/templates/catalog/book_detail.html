@@ -7,14 +7,12 @@
     <p>Publication Year: {{ book.publishedDate }}</p>
     <p>Description: {{ book.description }}</p>
 
-    <p>Status: {{ book.availability_status }}</p>
-
-    <form action="{% url 'checkout_book' book.pk %}" method="post">
+    <form action="{% url 'checkout_book' book.id %}" method="post">
         {% csrf_token %}
         <button type="submit">Checkout</button>
     </form>
 
-    <form action="{% url 'return_book' book.pk %}" method="post">
+    <form action "{% url 'return_book' book.id %}" method="post">
         {% csrf_token %}
         <button type="submit">Return</button>
     </form>
