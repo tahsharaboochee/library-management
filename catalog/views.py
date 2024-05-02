@@ -63,24 +63,27 @@ def fetch_books(query):
 
 
 def book_detail(request, id):
-    """
-    Fetch and display a single book by its Google Books ID.
-    """
-    url = f"https://www.googleapis.com/books/v1/volumes/{id}"
-    response = requests.get(url)
-    data = response.json()
+    # Check if id is numeric (indicating a UserBook pk)
+    if id.isnumeric():
+        user_book = get_object_or_404(UserBook, pk=id)
+        return render(request, 'catalog/book_detail.html', {'book': user_book})
 
+    # Otherwise, fetch from API
+    response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{id}")
+    data = response.json()
     volume_info = data.get("volumeInfo", {})
+
     book = {
         'id': id,
         'title': volume_info.get("title"),
         'authors': volume_info.get("authors", []),
         'isbn': next((id['identifier'] for id in volume_info.get('industryIdentifiers', []) if id['type'] == 'ISBN_13'), 'N/A'),
-        'publishedDate': volume_info.get("publishedDate", 'N/A'),
         'description': volume_info.get("description", "No description available"),
+        'publication_year': volume_info.get("publishedDate"),
     }
 
     return render(request, 'catalog/book_detail.html', {'book': book})
+
 
 
 def checkout_book(request, pk):
