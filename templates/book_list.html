@@ -1,40 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<div class="container mt-4">
     <h2>Library Books</h2>
 
-    <form action="" method="get">
+    <form action="" method="get" class="search-form">
         <input type="text" name="q" value="{{ query }}" placeholder="Search books by title, author, or ISBN...">
         <button type="submit">Search</button>
     </form>
 
     {% if books %}
-        <h3>API Results:</h3>
-        <ul>
+        <div class="book-list-container">
             {% for book in books %}
-                <li>
-                    <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by {{ book.authors|join:', ' }}
-                    <form action="{% url 'save_book' book.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit">checkout</button>
-                    </form>
-                </li>
+                <div class="book-card">
+                    <h3><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></h3>
+                    <p>by {{ book.authors}}</p>
+                    <div class="book-actions">
+                        <form action="{% url 'save_book' book.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">Checkout</button>
+                        </form>
+                    </div>
+                </div>
             {% endfor %}
-        </ul>
+        </div>
     {% else %}
         <p>No books found or service unavailable. Please try again later.</p>
     {% endif %}
 
     <h3>My Saved Books:</h3>
-    <ul>
+    <div class="book-list-container">
         {% for user_book in user_books %}
-            <li>
-                <a href="{% url 'book_detail' user_book.pk %}">{{ user_book.book_title }}</a> by {{ user_book.authors }}
-                <form action="{% url 'delete_book' user_book.pk %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit">Return</button>
-                </form>
-            </li>
+            <div class="book-card">
+                <h3><a href="{% url 'book_detail' user_book.pk %}">{{ user_book.book_title }}</a></h3>
+                <p>by {{ user_book.authors }}</p>
+                <div class="book-actions">
+                    <form action="{% url 'delete_book' user_book.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Return</button>
+                    </form>
+                </div>
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+</div>
 {% endblock %}

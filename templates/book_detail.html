@@ -1,20 +1,22 @@
 {% extends 'base.html' %}
 
-{% block title %}Book Details{% endblock %}
+{% block title %}{{ book.title }} - Book Details{% endblock %}
 
 {% block content %}
+<div class="container mt-4">
     <h1>{{ book.title }}</h1>
-    <p><strong>Authors:</strong> {{ book.authors }}</p>
+    <p><strong>Authors:</strong> {{ book.authors|join:", " }}</p>
     <p><strong>ISBN:</strong> {{ book.isbn }}</p>
     <p><strong>Published Year:</strong> {{ book.publishedDate }}</p>
     <p><strong>Description:</strong> {{ book.description }}</p>
-
-    {% if book.id|stringformat:"s"|length <= 13 %}  {# Assuming ISBN-like identifier for database entries #}
-        <a href="{% url 'checkout_book' book.book_id %}">Checkout</a>
-        <a href="{% url 'delete_book' book.book_id %}">Delete</a>
-    {% else %}
-        <a href="{% url 'checkout_book' book.id %}">Checkout</a>  {# Assume handling for API books needs different treatment #}
-    {% endif %}
-
-    <a href="{% url 'book_list' %}">Back to Book List</a>
+    <div>
+        {% if book.id|stringformat:"s"|length <= 13 %}
+            <a href="{% url 'checkout_book' book.book_id %}" class="btn btn-primary">Checkout</a>
+            <a href="{% url 'delete_book' book.book_id %}" class="btn btn-danger">Delete</a>
+        {% else %}
+            <a href="{% url 'checkout_book' book.id %}" class="btn btn-primary">Checkout</a>
+        {% endif %}
+        <a href="{% url 'book_list' %}" class="btn btn-secondary">Back to Book List</a>
+    </div>
+</div>
 {% endblock %}

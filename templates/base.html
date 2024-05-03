@@ -11,43 +11,15 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <style type="text/css">
-        .bs-example{
-            margin: 0px;
-        }
-        .navbar-brand{
-            font-size: 20px;
-            font-family: sans-serif;
-        }
-        .col-lg-6{
-            padding-left: 20%;
-        }
-        .jumbotron{
-            margin-bottom: 0px;
-        }
-    </style>
 </head>
 <body>
-    
-    <header>
-        <nav class="navbar navbar-expand-md navbar-light bg-light">
-            <a href="{% url 'index' %}" class="navbar-brand">Home</a>
-            <a href="{% url 'home' %}" class="navbar-brand">Login</a>
-            <a href="{% url 'book_list' %}" class="navbar-brand">Books</a>
-            <a href="{% url 'profile_view' %}" class="navbar-brand">Profile</a>
-            {% if request.user.is_authenticated and request.user.is_staff %}
-                <a href="{% url 'admin:index' %}" class="navbar-brand">Admin</a>
-            {% endif %}
-        </nav>
-    </header>    
+    {% include 'navbar.html' %}
 
-    <main>
+    <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <p>© 2024 Library Management System</p>
-    </footer>
+    {% include 'footer.html' %}
 
     <script src="{% static 'js/scripts.js' %}"></script>
 </body>
