@@ -4,7 +4,7 @@
 ## Overview
 This Library Management System is designed to manage the day-to-day operations of a library, providing functionalities for user management, book management, and circulation management. This project is built using Django and connects to a MySQL database using PyMySQL.
 
-![Demo](library-management/static/images/library-management-demo.gif)
+![Demo](https://imgflip.com/gif/8oxixf)
 
 ## Getting Started
 
