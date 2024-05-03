@@ -35,3 +35,5 @@ class RegisterForm(UserCreationForm):
         if commit:
             user.save()
         return user
+class BookFetchForm(forms.Form):
+    identifier = forms.CharField(label='Book Identifier', max_length=100)

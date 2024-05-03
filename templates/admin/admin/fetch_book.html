@@ -1,0 +1,10 @@
+<!-- templates/admin/fetch_book.html -->
+
+{% extends "admin/base_site.html" %}
+{% block content %}
+<h1>Fetch Book from Google Books API</h1>
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Fetch and Add Book</button>
+</form>
+{% endblock %}
