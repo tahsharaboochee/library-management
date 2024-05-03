@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container mt-4">
     <h1>{{ book.title }}</h1>
-    <p><strong>Authors:</strong> {{ book.authors|join:", " }}</p>
+    <p><strong>Authors:</strong> {{ book.authors }}</p>
     <p><strong>ISBN:</strong> {{ book.isbn }}</p>
     <p><strong>Published Year:</strong> {{ book.publishedDate }}</p>
     <p><strong>Description:</strong> {{ book.description }}</p>
