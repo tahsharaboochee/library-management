@@ -63,37 +63,40 @@ def fetch_books(query):
     return books
 
 
-def book_detail(request, pk):
-    # # Check if id is numeric (indicating a UserBook pk)
-    # if id.isnumeric():
-    #     user_book = get_object_or_404(UserBook, pk=id)
-    #     return render(request, 'catalog/book_detail.html', {'book': user_book})
-
-    # # Otherwise, fetch from API
-    # response = requests.get(f"https://www.googleapis.com/books/v1/volumes/{id}")
-    # data = response.json()
-    # volume_info = data.get("volumeInfo", {})
-
-    # book = {
-    #     'id': id,
-    #     'title': volume_info.get("title"),
-    #     'authors': volume_info.get("authors", []),
-    #     'isbn': next((id['identifier'] for id in volume_info.get('industryIdentifiers', []) if id['type'] == 'ISBN_13'), 'N/A'),
-    #     'description': volume_info.get("description", "No description available"),
-    #     'publication_year': volume_info.get("publishedDate"),
-    # }
-
-    # return render(request, 'book_detail.html', {'book': book})
-    user_book = get_object_or_404(UserBook, book_id=pk)  # Changed to use book_id for lookup
-    return render(request, 'book_detail.html', {'book': user_book})
-
+def book_detail(request, book_id):
+    try:
+        # Try to fetch the book from UserBook using the correct field for filtering
+        book = UserBook.objects.get(book_id=book_id)
+        return render(request, 'book_detail.html', {'book': book})
+    except UserBook.DoesNotExist:
+        # If not found in UserBook, attempt to fetch from Google Books API
+        response = requests.get(f'https://www.googleapis.com/books/v1/volumes/{book_id}')
+        if response.status_code == 200:
+            data = response.json()
+            volume_info = data.get("volumeInfo", {})
+            book = {
+                'id': book_id,
+                'title': volume_info.get("title"),
+                'authors': ", ".join(volume_info.get("authors", [])),
+                'isbn': next((id['identifier'] for id in volume_info.get('industryIdentifiers', []) if id['type'] == 'ISBN_13'), 'N/A'),
+                'publishedDate': volume_info.get("publishedDate"),
+                'description': volume_info.get("description", "No description available"),
+            }
+            return render(request, 'book_detail.html', {'book': book})
+        else:
+            # Handle error or not found
+            return render(request, 'error.html', {'message': 'Book not found or API error.'})
+    except ValueError:
+        # Catch other value errors that might occur
+        return render(request, 'error.html', {'message': 'Error retrieving book details.'})
 
 
 def checkout_book(request, pk):
-    book = get_object_or_404(Book, pk=pk)
+    # Ensure that the lookup is using the correct field type
+    book = get_object_or_404(Book, pk=pk)  # Ensure Book's primary key type matches pk type
     if request.method == 'POST':
         Transaction.objects.create(book=book, user=request.user, transaction_type="checkout")
-        return redirect('book_detail', pk=pk)
+        return redirect('book_detail', pk=book.pk)
 
     return render(request, 'checkout.html', {'book': book})
 
@@ -186,6 +189,10 @@ def delete_book(request, pk):
 def home(request):
     context = {'user': request.user, 'title': 'Home Page'}
     return render(request, 'home.html', context)
+
+
+def index(request):
+    return render(request, 'index.html') 
 
 
 @login_required

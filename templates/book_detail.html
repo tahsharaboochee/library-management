@@ -1,27 +1,20 @@
 {% extends 'base.html' %}
 
-{% block title %}{{ book.title }}{% endblock %}
+{% block title %}Book Details{% endblock %}
 
 {% block content %}
-    <h2>{{ book.title }}</h2>
-    <p>Author(s): {{ book.author|join:', ' }}</p>
-    <p>ISBN: {{ book.isbn }}</p>
-    <p>Publication Year: {{ book.publishedDate }}</p>
-    <p>Description: {{ book.description }}</p>
+    <h1>{{ book.title }}</h1>
+    <p><strong>Authors:</strong> {{ book.authors }}</p>
+    <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+    <p><strong>Published Year:</strong> {{ book.publishedDate }}</p>
+    <p><strong>Description:</strong> {{ book.description }}</p>
 
-    <p>Status: {{ book.availability_status }}</p>
-
-    <form action="{% url 'checkout_book' book.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Checkout</button>
-    </form>
-
-    <form action="{% url 'return_book' book.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Return</button>
-    </form>
-
-    <a href="{% url 'delete_book' book.pk %}">Delete</a>
+    {% if book.id|stringformat:"s"|length <= 13 %}  {# Assuming ISBN-like identifier for database entries #}
+        <a href="{% url 'checkout_book' book.book_id %}">Checkout</a>
+        <a href="{% url 'delete_book' book.book_id %}">Delete</a>
+    {% else %}
+        <a href="{% url 'checkout_book' book.id %}">Checkout</a>  {# Assume handling for API books needs different treatment #}
+    {% endif %}
 
     <a href="{% url 'book_list' %}">Back to Book List</a>
 {% endblock %}

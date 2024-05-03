@@ -115,7 +115,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_REDIRECT_URL = 'home'  # Redirect to home after login
-LOGOUT_REDIRECT_URL = 'login'  # Redirect to login page after logout
+LOGOUT_REDIRECT_URL = 'index'  # Redirect to login page after logout
 LOGIN_URL = 'login'  # URL for login redirects
 
 # Default primary key field type
