@@ -62,14 +62,40 @@ footer {
 }
 
 footer a.fa {
-    color: #fff; /* Ensures social icons are white */
-    padding: 10px; /* Spacing around icons */
-    font-size: 24px; /* Large icons */
+    padding: 20px;
+    font-size: 23px;
+    width: 60px;
+    text-align: center;
+    text-decoration: none;
+    margin: 5px 2px;
+    border-radius: 50%;
 }
 
 footer a.fa:hover {
-    color: #ccc; /* Grey color on hover for visual feedback */
+    opacity: 0.5;
+    text-decoration: none;
 }
+
+footer a.fa-facebook {
+    background: #3B5998;
+    color: white;
+  margin-top: 30px;
+  }
+  
+footer a.fa-linkedin {
+    background: #25d366;
+    color: white;
+  }
+  
+footer a.fa-twitter {
+    background: #55ACEE;
+    color: white;
+  }
+  
+footer a.fa-instagram {
+    background: #125688;
+    color: white;
+  }
 
 /* Utility and adjustments */
 .jumbotron {
