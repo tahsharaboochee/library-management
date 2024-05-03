@@ -1,230 +1,131 @@
-.bs-example {
-    margin: 0px;
-}
-.navbar-brand, .nav-link {
-    font-size: 20px;
-    font-family: sans-serif;
-}
-.col-lg-6 {
-    padding-left: 20%;
-}
-.jumbotron {
-    margin-bottom: 0px;
+/* General styles */
+.main-content {
+    min-height: calc(100vh - 140px); /* Adjust calculation based on actual navbar and footer sizes */
+    padding: 20px; /* Adequate padding around content */
+    box-sizing: border-box; /* Include padding in width and height calculations */
 }
 
 body {
-    padding-top: 100px; 
-    background-color: #f8f9fa;
+    padding-top: 80px; /* Increase top padding to ensure content starts below navbar */
+    padding-bottom: 60px; /* Add bottom padding to ensure content does not hide behind the fixed footer */
+    background-color: #f8f9fa; /* Consistent background color */
 }
 
-.container {
-    margin-top: 20px;
-}
-
-
-.navbar {
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 1000; /* High z-index to ensure it stays on top */
-}
-
-/* Footer styles */
-footer {
-    background-color: #333;
-    color: white;
-    font-size: 16px;
-    padding: 20px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-footer p {
-    margin: 0;
-    padding: 0 20px;
-}
-
-footer a.fa {
-    color: white;
-    padding: 15px;
-    font-size: 26px;
-    transition: color 0.3s ease-in-out;
-}
-
-footer a.fa:hover {
-    color: #ddd;
-}
-
-.container-fluid {
-    width: 100%;
+.container, .container-fluid {
     padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto;
 }
 
-
-/* Center the form on the page */
-.form-signin {
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
+/* Navbar styles */
+.navbar {
+    height: 60px;  // Explicit height
+    min-height: 50px;  // Minimum height
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Bootstrap default z-index for navbar */
+    background-color: #007bff; /* Primary blue */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Adds subtle shadow under navbar */
+    padding: 10px 0;
 }
 
-/* Style inputs and button for better aesthetics */
-.input-group {
-    margin-bottom: 15px; /* Adds space between input fields */
+.navbar-brand, .nav-link {
+    font-size: 20px; /* Larger font size for navigation links */
+    color: #fff; /* White text color */
 }
 
-.input-group .form-control, .input-group .btn {
+.nav-link {
+    margin-right: 20px; /* Adds spacing between navigation links */
+}
+
+.nav-link:hover {
+    color: #f8f9fa; /* Slightly lighter white color on hover for better visual feedback */
+}
+
+/* Footer styles */
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #333; /* Dark grey */
+    color: white;
+    text-align: center;
+    padding: 10px 0; /* Adjust padding */
+    font-size: 16px; /* Maintain readability */
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1); /* Subtle shadow to lift footer off the page */
+}
+
+footer a.fa {
+    color: #fff; /* Ensures social icons are white */
+    padding: 10px; /* Spacing around icons */
+    font-size: 24px; /* Large icons */
+}
+
+footer a.fa:hover {
+    color: #ccc; /* Grey color on hover for visual feedback */
+}
+
+/* Utility and adjustments */
+.jumbotron {
+    margin-bottom: 0; /* Removes margin below jumbotron for tighter spacing */
+}
+
+/* Login and forms */
+.form-signin, .login-card {
+    max-width: 330px; /* Maximum width of forms */
+    padding: 20px; /* Padding inside the form */
+    margin: 40px auto; /* Center form on the page vertically and horizontally */
+    background-color: #fff; /* White background for form */
+    border-radius: 8px; /* Rounded corners for the form */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Shadow for 3D effect */
+}
+
+.input-group .form-control, .input-group-append .btn {
     height: 38px; /* Ensures inputs and buttons are the same height */
 }
 
 .btn-primary {
-    width: 100%; /* Makes the button extend full width of the form */
-    border-radius: 5px; /* Rounds the corners of the button */
+    width: 100%; /* Full width buttons */
+    border-radius: 5px; /* Rounded corners for buttons */
 }
 
-/* login */
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;  /* Adjust height to vertically center */
-}
-
-.login-card {
-    width: 100%;
-    max-width: 330px;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 20px;
-}
-
-input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type="submit"] {
-    width: 100%;
-    background-color: #4CAF50;
-    color: white;
-    padding: 14px 20px;
-    margin: 8px 0;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-input[type="submit"]:hover {
-    background-color: #45a049;
-}
-
-/* books */
-.books-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-}
-
-.book-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 10px;
-    padding: 20px;
-    width: calc(33.333% - 20px); /* three items per row */
-    box-sizing: border-box;
-}
-
-.book-card h4 {
-    color: #333;
-}
-
-.book-card a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
+/* Book styles */
 .book-list-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
+    justify-content: space-around; /* Distributes space evenly around items */
 }
 
 .book-card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    margin: 10px;
-    padding: 20px;
-    width: calc(25% - 20px); /* Four items per row */
-    box-sizing: border-box;
-    transition: transform 0.2s;
-}
-
-.book-card:hover {
-    transform: scale(1.05); /* Slight animation on hover */
+    width: calc(25% - 20px); /* Four items per row with space between */
+    margin: 10px; /* Spacing around cards */
+    padding: 20px; /* Padding inside cards */
+    background-color: #fff; /* White background for cards */
+    border-radius: 8px; /* Rounded corners for cards */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Shadow for depth effect */
 }
 
 .book-card h4, .book-card p {
-    margin: 0;
-}
-
-.book-card a {
-    display: block;
-    text-decoration: none;
-    color: #007BFF;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.search-form {
-    margin-bottom: 20px;
-}
-
-.book-list-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-
-.book-card {
-    flex: 0 0 31%; /* Creates a three-column layout */
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    padding: 15px;
-    text-align: left;
-}
-
-.book-card h3 {
-    font-size: 18px;
-    margin-top: 0;
-}
-
-.book-card p {
-    font-size: 16px;
-    color: #666;
-    margin: 5px 0 15px;
-}
-
-.book-actions {
-    text-align: right;
+    margin-bottom: 10px; /* Spacing below each text element */
 }
 
 .book-actions button {
-    margin-left: 10px;
+    margin-top: 10px; /* Space above buttons */
+    padding: 5px 15px; /* Padding inside buttons */
+}
+
+.search-form {
+    margin-bottom: 20px; /* Space below the search form */
+}
+
+.search-form input[type="text"] {
+    width: 70%; /* Larger width for text input */
+    margin-right: 5%; /* Space between text input and button */
+}
+
+.search-form button {
+    width: 25%; /* Width of the search button */
 }
