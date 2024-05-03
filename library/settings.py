@@ -40,7 +40,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'library/templates'),  # Ensuring the main templates directory is accessible
+            os.path.join(BASE_DIR, 'templates'),  # Ensuring the main templates directory is accessible
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -109,7 +109,7 @@ USE_TZ = True
 STATIC_URL = '/static/'  # Define where Django looks for static files
 # Specify additional directories where static files may be found
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'library/static'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 # Directory where collected static files are stored for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
