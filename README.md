@@ -4,7 +4,7 @@
 ## Overview
 This Library Management System is designed to manage the day-to-day operations of a library, providing functionalities for user management, book management, and circulation management. This project is built using Django and connects to a MySQL database using PyMySQL.
 
-![Demo](https://imgflip.com/gif/8oxixf)
+![Demo](library-management/static/images/library-management-demo.gif)
 
 ## Getting Started
 
@@ -95,7 +95,7 @@ Each of these routes incorporates necessary security measures such as:
 - Authentication checks to ensure that only logged-in users can access specific functionalities like checking out books or viewing personal profiles.
 - Authorization checks to restrict sensitive actions (like editing or deleting book records) to users who have administrative privileges or specific roles within the system.
 
-These routes form the backbone of your application, ensuring it operates securely and efficiently while providing users with a robust set of features tailored to library management.
+These routes form the backbone of the application, ensuring it operates securely and efficiently while providing users with a robust set of features tailored to library management.
 
 
 ## Tests
